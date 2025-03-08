@@ -29,8 +29,9 @@ export default function App() {
   function pickedNumberHandler(pickedNumber) {
     setUserNumber(pickedNumber);
   }
-  function GameOver() {
+  function GameOver(roundsNumber) {
     setIsGameOver(true);
+    setGuessedRounds(roundsNumber);
   }
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
 

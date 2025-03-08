@@ -6,6 +6,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import InstructionText from "../Components/game/InstructionText";
 import Card from "../Components/UI/Card";
 import { Ionicons } from "@expo/vector-icons";
+import GuesslogItems from "../Components/game/GuesslogItems";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -20,12 +21,12 @@ let max = 100;
 function GameScreen({ userNumber, GameOver }) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
-  const [guessedRounds, setGuessedRounds] = useState([]);
+  const [guessedRounds, setGuessedRounds] = useState([initialGuess]);
 
   function reGuessNumber(destination) {
     if (
       (destination === "lower" && currentGuess < userNumber) ||
-      (destination === "greater" && currentGuess > userNumber)
+      (destination === "higher" && currentGuess > userNumber)
     ) {
       Alert.alert("Don't lie!", "You know that this is wrong...", [
         { text: "Sorry!", style: "cancel" },
@@ -45,9 +46,13 @@ function GameScreen({ userNumber, GameOver }) {
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      GameOver();
+      GameOver(guessedRounds.length);
     }
   }, [currentGuess, GameOver, userNumber]);
+  useEffect(() => {
+    min = 1;
+    max = 100;
+  }, []);
 
   return (
     <View style={styles.screen}>
@@ -72,8 +77,13 @@ function GameScreen({ userNumber, GameOver }) {
       </Card>
       <FlatList
         data={guessedRounds}
-        renderItem={({ item }) => <Text>{item}</Text>}
-        keyExtractor={(item) => item}
+        renderItem={(itemData) => (
+          <GuesslogItems
+            guess={itemData.item}
+            roundsNumber={guessedRounds.length - itemData.index}
+          />
+        )}
+        keyExtractor={(item, index) => index}
       />
     </View>
   );
