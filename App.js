@@ -7,6 +7,8 @@ import GameScreen from "./Screens/GameScreen";
 import { useState } from "react";
 import GameOverScreen from "./Screens/GameOverScreen";
 import AppLoading from "expo-app-loading";
+import { StatusBar } from "expo-status-bar";
+
 export default function App() {
   const [userNumber, setUserNumber] = useState();
   const [isGameOver, setIsGameOver] = useState(false);
@@ -48,16 +50,19 @@ export default function App() {
     );
   }
   return (
-    <LinearGradient colors={["#4e0329", "#ddb52f"]} style={styles.container}>
-      <ImageBackground
-        source={require("./assets/images/background.png")}
-        style={styles.container}
-        resizeMode="cover"
-        imageStyle={styles.imageContainer}
-      >
-        <SafeAreaView style={styles.container}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+    <>
+      <StatusBar style="light" />
+      <LinearGradient colors={["#4e0329", "#ddb52f"]} style={styles.container}>
+        <ImageBackground
+          source={require("./assets/images/background.png")}
+          style={styles.container}
+          resizeMode="cover"
+          imageStyle={styles.imageContainer}
+        >
+          <SafeAreaView style={styles.container}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 
